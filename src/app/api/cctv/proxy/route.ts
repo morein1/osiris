@@ -4,6 +4,10 @@ import { safeFetch } from '@/lib/ssrf-guard';
 export const dynamic = 'force-dynamic';
 
 const ALLOWED_DOMAINS = [
+  // Denmark — legacy public HTTP snapshot cameras
+  '87.56.55.165',        // Skagen Lystbådehavn
+  'glider.dk',            // Nordsjællands Svæveflyveklub
+  'lemvig.com',           // Lemvig Flyveplads
   // Taiwan — National Freeway (國道) MJPEG hosts
   'cctvn.freeway.gov.tw',
   'cctvc.freeway.gov.tw',
