@@ -92,10 +92,11 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
     // JPG / MJPEG fallback
     const targetUrl = camera.feed_url || camera.stream_url;
     if (targetUrl) {
-      if (streamType === 'mjpeg') {
-        // MJPEG streams are multipart/x-mixed-replace which browsers don't
-        // reliably render in <img> tags. Proxy through our backend to extract
-        // the first JPEG frame and return it as a static image.
+      const needsImageProxy = streamType === 'mjpeg' || targetUrl.startsWith('http://');
+      if (needsImageProxy) {
+        // MJPEG streams need frame extraction, while legacy HTTP snapshots
+        // must use the same-origin proxy to avoid mixed-content blocking on
+        // HTTPS OSIRIS deployments. The proxy allowlist limits reachable hosts.
         setImageUrl(`/api/cctv/proxy?url=${encodeURIComponent(targetUrl)}&_t=${Date.now()}`);
       } else {
         const url = targetUrl.includes('?') ? `${targetUrl}&_t=${Date.now()}` : `${targetUrl}?_t=${Date.now()}`;

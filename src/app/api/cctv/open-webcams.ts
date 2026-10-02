@@ -9,7 +9,7 @@ const GEOJSON_URL = 'https://raw.githubusercontent.com/willytop8/Live-Environmen
 const COUNTRY_NAMES: Record<string, string> = {
   AL: 'Albania', AT: 'Austria', AU: 'Australia', BG: 'Bulgaria',
   BR: 'Brazil', CA: 'Canada', CH: 'Switzerland', CZ: 'Czechia',
-  DE: 'Germany', EE: 'Estonia', ES: 'Spain', FI: 'Finland',
+  DE: 'Germany', DK: 'Denmark', EE: 'Estonia', ES: 'Spain', FI: 'Finland',
   FR: 'France', GB: 'United Kingdom', GR: 'Greece', HR: 'Croatia',
   HU: 'Hungary', ID: 'Indonesia', IE: 'Ireland', IL: 'Israel',
   IT: 'Italy', JP: 'Japan', KG: 'Kyrgyzstan', KR: 'South Korea',
