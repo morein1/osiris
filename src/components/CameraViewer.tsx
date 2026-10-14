@@ -213,8 +213,8 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
             {externalOnly ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-30 backdrop-blur-sm p-4 text-center">
                 <ExternalLink className="w-6 h-6 mb-3 opacity-50" style={{ color: 'var(--gold-primary)' }} />
-                <p className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--gold-primary)' }}>SECURE FEED ENCRYPTED</p>
-                <p className="text-[8px] font-mono text-[var(--text-muted)] mt-2 max-w-[80%] uppercase">This feed requires external clearance</p>
+                <p className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--gold-primary)' }}>PUBLIC WEBCAM PAGE</p>
+                <p className="text-[8px] font-mono text-[var(--text-muted)] mt-2 max-w-[80%] uppercase">Open the publisher's website to view this public camera</p>
                 <a 
                   href={externalFeedUrl} 
                   target="_blank" 
@@ -222,7 +222,7 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
                   className="mt-4 px-4 py-2 rounded text-[9px] font-mono font-bold tracking-widest transition-all hover:bg-white/10"
                   style={{ border: '1px solid var(--border-primary)', color: 'var(--gold-primary)' }}
                 >
-                  ACCESS TERMINAL
+                  OPEN WEBCAM PAGE
                 </a>
               </div>
             ) : error ? (
