@@ -1,4 +1,5 @@
 import type { CctvCamera } from './types';
+import { fetchDenmarkCameras } from './denmark';
 
 // ── GeoJSON Source ──
 // Live-Environment-Streams: 5,997 public webcams worldwide with coordinates
@@ -105,6 +106,8 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 /**
  * Fetch publicly accessible webcams from Live-Environment-Streams GeoJSON.
  * No API key required. Caches results for 5 minutes.
+ * Also appends a small curated Denmark list because the upstream dataset
+ * currently has no DK country file/records.
  */
 export async function fetchOpenWebcams(): Promise<CctvCamera[]> {
   // Return cache if fresh
@@ -122,7 +125,7 @@ export async function fetchOpenWebcams(): Promise<CctvCamera[]> {
     if (!res.ok) {
       // Fall back to cache if stale
       if (cachedCameras) return cachedCameras;
-      return [];
+      return fetchDenmarkCameras();
     }
 
     const data = await res.json();
@@ -143,6 +146,16 @@ export async function fetchOpenWebcams(): Promise<CctvCamera[]> {
       cameras.push(cam);
     }
 
+    // Denmark is curated locally because the upstream webcam dataset currently
+    // does not provide DK records. These entries are public provider pages.
+    const denmarkCameras = await fetchDenmarkCameras();
+    for (const cam of denmarkCameras) {
+      const key = `${cam.lat.toFixed(2)}-${cam.lng.toFixed(2)}-${cam.stream_url || cam.external_url || cam.id}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      cameras.push(cam);
+    }
+
     // Update cache
     cachedCameras = cameras;
     cacheTimestamp = Date.now();
@@ -150,9 +163,9 @@ export async function fetchOpenWebcams(): Promise<CctvCamera[]> {
     return cameras;
   } catch (err) {
     console.error('open-webcams fetch error:', err);
-    // Fall back to cache
+    // Fall back to cache if possible; otherwise still return Denmark cameras.
     if (cachedCameras) return cachedCameras;
-    return [];
+    return fetchDenmarkCameras();
   }
 }
 
