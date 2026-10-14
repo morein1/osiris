@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/app/api/cctv/**'
       - 'src/components/CameraViewer.tsx'
+      - 'scripts/check-denmark-webcams.mjs'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/denmark-ci.yml'
@@ -32,6 +33,9 @@ jobs:
         run: npx eslint src/app/api/cctv/denmark.ts src/app/api/cctv/proxy/route.ts
       - name: Run tests that do not require Redis or PostgreSQL
         run: npx vitest run --exclude src/lib/cache.test.ts --exclude src/lib/rateLimit.test.ts --exclude src/lib/feedStore.test.ts --exclude src/lib/db/postgres.test.ts
+      - name: Check public Denmark image URLs (informational)
+        if: success() || failure()
+        run: node scripts/check-denmark-webcams.mjs
       - name: TypeScript typecheck
         if: success() || failure()
         run: npx tsc --noEmit
