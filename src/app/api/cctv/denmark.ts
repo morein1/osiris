@@ -138,14 +138,14 @@ const DENMARK_CAMERAS: CctvCamera[] = [
     source: 'Svebølle Motocross Klub',
   },
 
-  // APM Terminals Aarhus — two public live gate images.
+  // APM Terminals Aarhus — public gate-camera page. Direct image API returned
+  // timeout / HTTP 400 in the October 2026 CI check, so open the official page
+  // rather than showing a broken embedded image.
   {
     id: 'dk-apm-aarhus-gate-1',
     lat: 56.156930, lng: 10.246820,
     name: 'APM Terminals Aarhus — Gate Area',
     city: 'Aarhus', country: 'Denmark',
-    feed_url: 'https://cms-cd.apmterminals.com/apm/api/v1/gatecameras/gate-camera?id=4dbc015c-4147-4b95-b5c1-e2b3901f0478',
-    stream_type: 'jpg',
     external_url: 'https://www.apmterminals.com/en/aarhus/e-tools/gate-status',
     source: 'APM Terminals Aarhus',
   },
@@ -154,8 +154,6 @@ const DENMARK_CAMERAS: CctvCamera[] = [
     lat: 56.156930, lng: 10.246820,
     name: 'APM Terminals Aarhus — Marshal Entry',
     city: 'Aarhus', country: 'Denmark',
-    feed_url: 'https://cms-cd.apmterminals.com/apm/api/v1/gatecameras/gate-camera?id=66d905c7-873d-4eed-b8d6-31375f508873',
-    stream_type: 'jpg',
     external_url: 'https://www.apmterminals.com/en/aarhus/e-tools/gate-status',
     source: 'APM Terminals Aarhus',
   },
