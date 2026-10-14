@@ -30,9 +30,11 @@ jobs:
         run: npm ci
       - name: Lint new Denmark camera module and proxy
         run: npx eslint src/app/api/cctv/denmark.ts src/app/api/cctv/proxy/route.ts
-      - name: Run tests
-        run: npm test
+      - name: Run tests that do not require Redis or PostgreSQL
+        run: npx vitest run --exclude src/lib/cache.test.ts --exclude src/lib/rateLimit.test.ts --exclude src/lib/feedStore.test.ts --exclude src/lib/db/postgres.test.ts
       - name: TypeScript typecheck
+        if: success() || failure()
         run: npx tsc --noEmit
       - name: Production build
+        if: success() || failure()
         run: npm run build
