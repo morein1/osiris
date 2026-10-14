@@ -160,7 +160,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: 'no frame' }, { status: 502 });
     }
 
-    return new NextResponse(frame, {
+    return new NextResponse(new Uint8Array(frame), {
       headers: {
         'Content-Type': 'image/jpeg',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
