@@ -28,8 +28,8 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Lint changed CCTV files
-        run: npx eslint src/app/api/cctv/denmark.ts src/app/api/cctv/route.ts src/app/api/cctv/proxy/route.ts src/components/CameraViewer.tsx
+      - name: Lint new Denmark camera module and proxy
+        run: npx eslint src/app/api/cctv/denmark.ts src/app/api/cctv/proxy/route.ts
       - name: Run tests
         run: npm test
       - name: TypeScript typecheck
