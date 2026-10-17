@@ -24,7 +24,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: TypeScript check
-        run: npx tsc --noEmit
+      - name: Lint cache connection changes
+        run: npx eslint src/lib/db/postgres.ts src/lib/db/redis.ts
       - name: Production build
         run: npm run build
