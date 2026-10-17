@@ -12,6 +12,10 @@ export function getPool(): Pool {
       database: process.env.PG_DB ?? 'osiris',
       max: 10,
       idleTimeoutMillis: 30000,
+      // Cache storage is optional for API reads. If PostgreSQL is unavailable,
+      // fail fast so cacheFirst() can bypass it instead of letting a request sit
+      // until the edge/proxy times out.
+      connectionTimeoutMillis: Number(process.env.PG_CONNECT_TIMEOUT_MS ?? 1500),
     });
   }
   return pool;
