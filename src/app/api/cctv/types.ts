@@ -14,6 +14,11 @@ export interface CctvCamera {
   stream_type?: CctvStreamType;
   external_url?: string;
   source: string;
+  /** Optional grouping for public wildlife cameras. */
+  category?: 'birds-nature';
+  availability?: 'publisher' | 'seasonal' | 'season-ended-2026';
+  /** Area marker, not the exact camera or nest position. */
+  location_precision?: 'area';
 }
 
 export function normalizeFeedUrl(url: string): string {
