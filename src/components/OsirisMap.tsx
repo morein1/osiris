@@ -1134,8 +1134,8 @@ map.addSource('mitre-nodes', { type: 'geojson', data: EMPTY_FC });
       if (!e.features?.length) return;
       const p = e.features[0].properties as any;
       const coords = (e.features[0].geometry as any).coordinates;
-      const dotColor = '#7E57C2';
-      const streamType = p.stream_type || 'jpg';
+      const dotColor = p.category === 'birds-nature' ? '#2E7D32' : '#7E57C2';
+      const streamType = p.external_url && !p.feed_url && !p.stream_url ? 'webpage' : (p.stream_type || 'jpg');
       const camMeta = [
         ['SOURCE', p.source || '—'],
         ['CITY', p.city || '—'],
@@ -1145,14 +1145,14 @@ map.addSource('mitre-nodes', { type: 'geojson', data: EMPTY_FC });
       popup(coords, `<div style="${pStyle}border:1px solid ${dotColor}40;">
         <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid ${dotColor}40;padding-bottom:6px;margin-bottom:8px;">
           <div style="color:${dotColor};font-size:11px;font-weight:700;letter-spacing:0.05em;">${p.name || 'CCTV Camera'}</div>
-          <div style="color:#6F8092;font-size:8px;">${coords[1].toFixed(3)}, ${coords[0].toFixed(3)}</div>
+          <div style="color:#6F8092;font-size:8px;">${p.location_precision === 'area' ? 'Omtrentlig områdemarkør' : `${coords[1].toFixed(3)}, ${coords[0].toFixed(3)}`}</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;background:rgba(60,64,67,0.06);padding:6px;border-radius:4px;">
           ${camMeta}
         </div>
-        <button onclick="window.openOsirisIntel({ type: 'cctv', id: '${p.id}', name: '${p.name?.replace(/'/g, '\\\'') || ''}', city: '${p.city || ''}', country: '${p.country || ''}', source: '${p.source || ''}', feed_url: '${p.feed_url || ''}', stream_url: '${p.stream_url || ''}', stream_type: '${p.stream_type || ''}', external_url: '${p.external_url || ''}', lat: ${coords[1]}, lng: ${coords[0]} })" style="width:100%;padding:7px 12px;background:linear-gradient(90deg,${dotColor}15 0%,${dotColor}25 100%);border:1px solid ${dotColor}80;color:${dotColor};font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:bold;letter-spacing:0.15em;border-radius:4px;cursor:pointer;">OPEN FEED</button>
+        <button onclick="window.openOsirisIntel({ type: 'cctv', id: '${p.id}', name: '${p.name?.replace(/'/g, '\\\'') || ''}', city: '${p.city || ''}', country: '${p.country || ''}', source: '${p.source || ''}', feed_url: '${p.feed_url || ''}', stream_url: '${p.stream_url || ''}', stream_type: '${p.stream_type || ''}', external_url: '${p.external_url || ''}', category: '${p.category || ''}', availability: '${p.availability || ''}', location_precision: '${p.location_precision || ''}', lat: ${coords[1]}, lng: ${coords[0]} })" style="width:100%;padding:7px 12px;background:linear-gradient(90deg,${dotColor}15 0%,${dotColor}25 100%);border:1px solid ${dotColor}80;color:${dotColor};font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:bold;letter-spacing:0.15em;border-radius:4px;cursor:pointer;">OPEN FEED</button>
       </div>`);
-      map.flyTo({ center: coords, zoom: Math.max(map.getZoom(), 13), duration: 1000 });
+      map.flyTo({ center: coords, zoom: p.location_precision === 'area' ? 9 : Math.max(map.getZoom(), 13), duration: 1000 });
     });
 
     // ── Earthquakes (with USGS link) ──
@@ -2188,7 +2188,7 @@ map.addSource('mitre-nodes', { type: 'geojson', data: EMPTY_FC });
 
   useEffect(() => {
     if (!mapReady) return;
-    setGeo('cctv', activeLayers.cctv && data.cameras ? data.cameras.map((c: any) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [c.lng, c.lat] }, properties: { id: c.id, name: c.name, city: c.city, country: c.country, source: c.source, feed_url: c.feed_url, stream_url: c.stream_url, stream_type: c.stream_type, external_url: c.external_url } })) : []);
+    setGeo('cctv', activeLayers.cctv && data.cameras ? data.cameras.map((c: any) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [c.lng, c.lat] }, properties: { id: c.id, name: c.name, city: c.city, country: c.country, source: c.source, feed_url: c.feed_url, stream_url: c.stream_url, stream_type: c.stream_type, external_url: c.external_url, category: c.category, availability: c.availability, location_precision: c.location_precision } })) : []);
   }, [mapReady, data.cameras, activeLayers.cctv, setGeo]);
 
   useEffect(() => {

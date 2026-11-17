@@ -121,6 +121,13 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
 
   if (!camera) return null;
 
+  const natureCamera = camera.category === 'birds-nature';
+  const availabilityText = camera.availability === 'season-ended-2026'
+    ? 'Sæsonlukket i 2026. Udbyderen forventer at åbne igen i foråret 2027. Status kontrolleret 17. november 2026.'
+    : camera.availability === 'seasonal'
+      ? 'Sæsonkamera. Transmission kan være lukket uden for ynglesæsonen; se aktuel status hos udbyderen.'
+      : 'Offentlig kameraside. Se aktuel transmission og driftsstatus hos udbyderen.';
+
   return (
     <AnimatePresence>
         <motion.div
@@ -148,7 +155,7 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
               <div className="flex items-center justify-between px-3 py-1 border-b border-[var(--border-secondary)] text-[7px] font-mono tracking-[0.2em] text-[var(--text-muted)] bg-[var(--hover-accent)]">
                 <div className="flex items-center gap-3">
                   <span className="text-[var(--gold-primary)] font-bold">{camId}</span>
-                  <span>{camera.lat?.toFixed(4)}, {camera.lng?.toFixed(4)}</span>
+                  <span>{camera.location_precision === 'area' ? 'OMTRENTLIGT OMRÅDE' : `${camera.lat?.toFixed(4)}, ${camera.lng?.toFixed(4)}`}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span>{currentTime}</span>
@@ -213,8 +220,8 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
             {externalOnly ? (
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-30 backdrop-blur-sm p-4 text-center">
                 <ExternalLink className="w-6 h-6 mb-3 opacity-50" style={{ color: 'var(--gold-primary)' }} />
-                <p className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--gold-primary)' }}>PUBLIC WEBCAM PAGE</p>
-                <p className="text-[8px] font-mono text-[var(--text-muted)] mt-2 max-w-[80%] uppercase">Open the publisher's website to view this public camera</p>
+                <p className="text-[10px] font-mono uppercase tracking-widest" style={{ color: 'var(--gold-primary)' }}>{natureCamera ? 'FUGLE OG NATUR' : 'PUBLIC WEBCAM PAGE'}</p>
+                <p className="text-[8px] font-mono text-[var(--text-muted)] mt-2 max-w-[80%] uppercase">{natureCamera ? availabilityText : "Open the publisher's website to view this public camera"}</p>
                 <a 
                   href={externalFeedUrl} 
                   target="_blank" 
@@ -222,7 +229,7 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
                   className="mt-4 px-4 py-2 rounded text-[9px] font-mono font-bold tracking-widest transition-all hover:bg-white/10"
                   style={{ border: '1px solid var(--border-primary)', color: 'var(--gold-primary)' }}
                 >
-                  OPEN WEBCAM PAGE
+                  {natureCamera ? 'ÅBN KAMERASIDE' : 'OPEN WEBCAM PAGE'}
                 </a>
               </div>
             ) : error ? (
@@ -310,23 +317,23 @@ export default function CameraViewer({ camera, onClose, onLocate }: CameraViewer
               <div className="flex gap-4">
                 <div className="flex flex-col">
                   <span className="text-[6px] text-[var(--text-muted)] font-mono tracking-widest">FEED TYPE</span>
-                  <span className="text-[8px] text-[var(--text-heading)] font-mono tracking-widest uppercase">{streamType}</span>
+                  <span className="text-[8px] text-[var(--text-heading)] font-mono tracking-widest uppercase">{externalOnly ? 'WEBPAGE' : streamType}</span>
                 </div>
                 <div className="flex flex-col border-l border-[var(--border-primary)] pl-4">
                   <span className="text-[6px] text-[var(--text-muted)] font-mono tracking-widest">STATUS</span>
-                  <span className="text-[8px] text-[var(--alert-green)] font-mono tracking-widest">ACTIVE / RECORDING</span>
+                  <span className="text-[8px] text-[var(--alert-green)] font-mono tracking-widest">{externalOnly ? (camera.availability === 'season-ended-2026' ? 'SÆSONLUKKET (2026)' : 'SE UDBYDERSTATUS') : 'ACTIVE / RECORDING'}</span>
                 </div>
               </div>
               <div className="flex gap-3">
                 {(camera.feed_url || camera.external_url || (streamType === 'iframe' && camera.stream_url)) && (
                   <a href={camera.external_url || camera.feed_url || (streamType === 'iframe' ? camera.stream_url : undefined)} target="_blank" rel="noopener noreferrer"
                     className="flex items-center gap-1.5 px-2 py-1 bg-[var(--bg-tertiary)] hover:bg-[var(--hover-accent)] border border-[var(--border-primary)] transition-colors text-[8px] font-mono text-[var(--gold-primary)] tracking-widest">
-                    <ExternalLink className="w-2.5 h-2.5" /> RAW FEED
+                    <ExternalLink className="w-2.5 h-2.5" /> {externalOnly ? 'WEBCAM PAGE' : 'RAW FEED'}
                   </a>
                 )}
                 <a href={`https://www.google.com/maps/@${camera.lat},${camera.lng},17z`} target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1.5 px-2 py-1 bg-[var(--bg-tertiary)] hover:bg-[var(--hover-accent)] border border-[var(--border-primary)] transition-colors text-[8px] font-mono text-[var(--cyan-primary)] tracking-widest">
-                  <MapPin className="w-2.5 h-2.5" /> MAP TARGET
+                  <MapPin className="w-2.5 h-2.5" /> {camera.location_precision === 'area' ? 'OMRÅDE' : 'MAP TARGET'}
                 </a>
               </div>
             </div>

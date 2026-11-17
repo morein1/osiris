@@ -9,6 +9,42 @@ import type { CctvCamera } from './types';
 // OSIRIS deployment can render them without mixed-content errors.
 
 const DENMARK_CAMERAS: CctvCamera[] = [
+  // Fugle og natur — official public camera pages checked 2026-11-17.
+  // Availability describes the publisher's service, not a live playback test.
+  // Approximate area markers are explicitly labelled; no nest location inferred.
+  {
+    id: 'dk-nature-saksfjed-eagles',
+    lat: 54.61, lng: 11.46,
+    name: 'Fugle og natur — ØrneTV Saksfjed-Hyllekrog',
+    city: 'Saksfjed-Hyllekrog, Lolland', country: 'Denmark',
+    external_url: 'https://www.dof.dk/oplev-fuglene/ornetv',
+    source: 'DOF BirdLife',
+    category: 'birds-nature',
+    availability: 'publisher',
+    location_precision: 'area',
+  },
+  {
+    id: 'dk-nature-ugletv',
+    lat: 55.0, lng: 9.2,
+    name: 'Fugle og natur — UgleTV Sønderjylland (område)',
+    city: 'Sønderjylland (omtrentlig områdemarkør)', country: 'Denmark',
+    external_url: 'https://www.tytoalba.dk/ugletv',
+    source: 'Klaus Dichmann / UgleTV-KD-DK',
+    category: 'birds-nature',
+    availability: 'publisher',
+    location_precision: 'area',
+  },
+  {
+    id: 'dk-nature-esrum-kestrels',
+    lat: 56.04758, lng: 12.37756,
+    name: 'Fugle og natur — Esrum Kloster tårnfalkekasse',
+    city: 'Esrum', country: 'Denmark',
+    external_url: 'https://nationalparkkongernesnordsjaelland.dk/indsatser/formidling-og-undervisning/livestream-fra-reden',
+    source: 'Nationalpark Kongernes Nordsjælland',
+    category: 'birds-nature',
+    availability: 'season-ended-2026',
+  },
+
   // Skagen Lystbådehavn — four official public occupancy webcams.
   // Official harbour position: 57°43.0'N 10°35.5'E.
   {
@@ -439,10 +475,12 @@ const DENMARK_CAMERAS: CctvCamera[] = [
   {
     id: 'dk-public-gribskov-osprey',
     lat: 55.998889, lng: 12.285556,
-    name: 'Gribskov — Osprey nest',
+    name: 'Fugle og natur — Gribskov fiskeørnerede',
     city: 'Gribskov', country: 'Denmark',
-    external_url: 'https://worldcam.eu/webcams/europe/denmark/26017-gribskov-osprey-nest',
-    source: 'Public webcam listing',
+    external_url: 'https://naturstyrelsen.dk/find-et-naturomraade/naturguider/hovedstaden-og-nordsjaelland/gribskov/dyr-og-planter/fiskeoern',
+    source: 'Naturstyrelsen / Nationalpark Kongernes Nordsjælland',
+    category: 'birds-nature',
+    availability: 'seasonal',
   },
   {
     id: 'dk-public-hellerup-sejlklub',
@@ -535,10 +573,12 @@ const DENMARK_CAMERAS: CctvCamera[] = [
   {
     id: 'dk-public-smedager-storks',
     lat: 54.976944, lng: 9.178611,
-    name: 'Smedagervej — Storks',
+    name: 'Fugle og natur — Smedager storkerede',
     city: 'Smedager', country: 'Denmark',
-    external_url: 'https://worldcam.eu/webcams/europe/denmark/18237-smedagervej-storks',
-    source: 'Public webcam listing',
+    external_url: 'https://storkene.dk/livestreaming-tv-syd/',
+    source: 'Storkene.dk / TV SYD',
+    category: 'birds-nature',
+    availability: 'seasonal',
   },
   {
     id: 'dk-public-svendborg-sund',
